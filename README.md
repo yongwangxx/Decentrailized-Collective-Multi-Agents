@@ -7,7 +7,7 @@ communicate, has no identifier and no shared context, and receives the same ques
 The repository contains what is needed to repeat the three sets of experiments: a single Ising spin, three roles
 on a triangular lattice, and counterflow in three lanes.
 
-**Animations of the three-lane runs:** https://yongwangxx.github.io/Decentrailized-Collective-Multi-Agents/
+**Watch decentralized collective order emerge:** twelve agents with no leader, no memory and no communication sort mixed traffic into one-way lanes — https://yongwangxx.github.io/Decentrailized-Collective-Multi-Agents/
 
 - `code/` — prompts, randomization, run scripts and analysis scripts for all three sets of experiments.
   Start with `code/README.md`; every prompt is given word for word in `code/PROMPTS.md`.
