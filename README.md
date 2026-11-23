@@ -17,6 +17,7 @@ on a triangular lattice, and counterflow in three lanes.
 
 If you use this code, please cite the paper *Collective order from language models without communication, memory or shared context*.
 
+Citation metadata is in [`CITATION.cff`](CITATION.cff);
 ## License
 
 MIT, see `LICENSE`.
