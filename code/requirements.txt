@@ -1,0 +1,2 @@
+# Needed only by scripts/sim_reference.py (the reference simulation). Everything else uses the standard library.
+numpy>=1.22

@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lanes without a leader</title>
+<meta name="description" content="Twelve birds on a ring with three lanes, six flying each way. Every move of every bird is one separate query to a language model, with no memory and no communication. Mixed traffic sorts itself into one-way lanes.">
+<style>
+:root {
+  --ink: #0b1026; --paper: #ffffff; --wash: #f2f5ff; --muted: #4a5578; --line: #d5dcf2;
+  --hero1: #0b1026; --hero2: #1b1464;
+  --orange: #ff7a00; --blue: #0a84ff; --m1: #e6007e; --m2: #00a86b; --red: #ff2d2d; --hot: #e6007e;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.55; }
+p { margin: 0; }
+a { color: var(--blue); }
+.inner { max-width: 1200px; margin: 0 auto; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+.hero { background: linear-gradient(135deg, var(--hero1) 0%, var(--hero2) 60%, #3a0ca3 100%); color: #fff; padding: 44px 0 52px; position: relative; overflow: hidden; }
+.hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: linear-gradient(90deg, var(--orange) 0 50%, var(--blue) 50% 100%); }
+.hero .inner { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 36px; align-items: center; }
+.kicker { display: inline-block; font-weight: 800; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; background: var(--hot); padding: 5px 10px; border-radius: 4px; width: fit-content; }
+h1 { font-weight: 900; font-size: clamp(38px, 6vw, 72px); line-height: 0.98; letter-spacing: -0.02em; margin: 14px 0 0; }
+h1 .o { color: var(--orange); } h1 .b { color: #4db3ff; }
+.hero .text { display: grid; gap: 16px; }
+.hero .lede { font-size: 19px; color: #e9ecff; max-width: 34em; }
+.hero .lede b { color: #fff; }
+.hero video { border-radius: 14px; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45); border: 3px solid #fff; }
+.hero figure { margin: 0; }
+.hero figcaption { font-size: 14px; color: #c9d0ff; padding: 12px 2px 0; }
+@media (max-width: 900px) { .hero .inner { grid-template-columns: 1fr; gap: 24px; } .hero { padding: 30px 0 40px; } }
+section { padding: 56px 0 0; }
+section .inner { display: grid; gap: 22px; }
+h2 { font-weight: 900; font-size: clamp(28px, 3.6vw, 44px); line-height: 1.05; letter-spacing: -0.015em; margin: 0; }
+h2 em { font-style: normal; background: linear-gradient(90deg, var(--orange), var(--hot)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.intro { display: grid; gap: 12px; max-width: 46em; }
+.intro p { color: var(--muted); }
+.intro p.lead { color: var(--ink); font-size: 18px; }
+video { width: 100%; max-width: 100%; height: auto; display: block; background: #fff; aspect-ratio: 1140 / 660; }
+.key { display: flex; flex-wrap: wrap; gap: 10px; font-size: 14.5px; font-weight: 600; }
+.key span { display: inline-flex; align-items: center; gap: 8px; background: var(--wash); border-radius: 999px; padding: 7px 14px; }
+.sw { width: 16px; height: 16px; border-radius: 4px; display: inline-block; }
+.ring { width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--red); display: inline-block; }
+.ring.dash { border: 2px dashed var(--ink); }
+.band { font-weight: 800; font-size: 20px; margin: 14px 0 -4px; display: flex; align-items: center; gap: 12px; }
+.band::before { content: ""; flex: none; width: 28px; height: 6px; border-radius: 3px; background: var(--blue); }
+.band.alt::before { background: var(--orange); }
+.subnote { color: var(--muted); max-width: 46em; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; padding-right: 6px; }
+@media (max-width: 780px) { .grid { grid-template-columns: 1fr; } }
+figure.run { margin: 0; background: #fff; border: 2px solid var(--ink); border-radius: 14px; overflow: hidden; display: grid; min-width: 0; box-shadow: 6px 6px 0 var(--accent); }
+figure.run.m1 { --accent: var(--m1); } figure.run.m2 { --accent: var(--m2); }
+figure.run figcaption { padding: 14px 16px 16px; display: grid; gap: 8px; border-top: 2px solid var(--ink); }
+.cond { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.model { font-weight: 900; font-size: 19px; color: var(--accent); }
+.tag { font-weight: 800; font-size: 12.5px; letter-spacing: 0.04em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
+.tag.die-yes { background: var(--ink); color: #fff; }
+.tag.die-no { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
+.facts { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.facts b { color: var(--ink); font-weight: 800; }
+.small { font-size: 14px; color: var(--muted); max-width: 52em; }
+#prompt { background: var(--wash); margin-top: 64px; padding: 56px 0; }
+.switch { display: inline-flex; background: #fff; border: 2px solid var(--ink); border-radius: 999px; padding: 4px; gap: 4px; width: fit-content; }
+.switch button { font: 800 15px var(--sans); color: var(--ink); background: none; border: 0; border-radius: 999px; padding: 10px 18px; cursor: pointer; }
+.switch button[aria-pressed="true"] { background: var(--hot); color: #fff; }
+.switch button[data-set="off"][aria-pressed="true"] { background: var(--ink); }
+.sheet { background: #0b1026; color: #e6eaff; border-radius: 14px; padding: 22px 24px; min-width: 0; max-width: 60em; box-shadow: 8px 8px 0 var(--blue); margin-right: 8px; }
+.sheet .what { font-size: 14.5px; color: #aab4e8; margin-bottom: 14px; }
+pre { font-family: var(--mono); font-size: 13.5px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; }
+mark.die { background: var(--hot); color: #fff; font-weight: 700; padding: 3px 5px; border-radius: 4px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+[data-die="off"] mark.die { background: none; color: #7c86b8; font-weight: 400; text-decoration: line-through; text-decoration-color: var(--red); text-decoration-thickness: 2px; }
+.legend { color: var(--muted); max-width: 46em; }
+.chip { background: var(--hot); color: #fff; font-weight: 700; padding: 1px 7px; border-radius: 4px; }
+.close { padding: 64px 0 72px; }
+.close .claim { font-weight: 900; font-size: clamp(24px, 3.2vw, 38px); line-height: 1.12; letter-spacing: -0.01em; max-width: 22em; }
+.close .claim span { color: var(--blue); }
+.links { display: flex; flex-wrap: wrap; gap: 14px; }
+.links a { font-weight: 800; font-size: 16px; color: #fff; background: var(--blue); text-decoration: none; border-radius: 10px; padding: 13px 18px; box-shadow: 4px 4px 0 var(--ink); }
+.links a.alt { background: var(--orange); }
+.links a:hover { transform: translate(-1px, -1px); box-shadow: 6px 6px 0 var(--ink); }
+.byline { font-size: 15px; color: #c9d0ff; }
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+</style>
+
+<header class="hero">
+  <div class="inner">
+    <div class="text">
+      <span class="kicker">Twelve birds · three lanes · no leader</span>
+      <h1>Lanes <span class="o">without</span> a <span class="b">leader</span></h1>
+      <p class="byline" hidden></p>
+      <p class="lede">Twelve birds fly around a ring with three lanes, six in each direction. <b>Every move of every bird is one separate query to a language model.</b> A bird sees only the few cells around it. It has no memory, cannot talk to the others and has no name.</p>
+      <p class="lede">Nobody tells them which lane to take. Watch what happens.</p>
+    </div>
+    <figure>
+      <video src="lanes_opus_nodie.mp4" poster="lanes_opus_nodie_first.jpg" autoplay muted loop playsinline controls preload="metadata"></video>
+      <figcaption>A real run of 100 rounds. Orange birds fly anticlockwise, blue birds clockwise. When the three rings turn orange or blue, every lane is one-way.</figcaption>
+    </figure>
+  </div>
+</header>
+
+<section id="runs">
+  <div class="inner">
+    <div class="intro">
+      <h2>Six flights, <em>all real runs</em></h2>
+      <p class="lead">The track is a ring of 40 cells with three lanes. Each bird sees the three lanes two cells ahead and two cells behind. It can fly one cell ahead, one cell ahead into a neighbouring lane, or stay. All birds move at once, and a move into an occupied cell does not happen.</p>
+      <p>The birds share one goal: that every bird travels as smoothly as it can, with as few clashes as possible. In some runs each bird is also offered a die, a tool that picks one of its moves at random with weights the bird chooses.</p>
+    </div>
+    <div class="key" aria-label="How to read the videos">
+      <span><i class="sw" style="background: var(--orange)"></i>flying anticlockwise</span>
+      <span><i class="sw" style="background: var(--blue)"></i>flying clockwise</span>
+      <span><i class="ring"></i>could not move this round</span>
+      <span><i class="ring dash"></i>rolled the die</span>
+      <span>pink sector: what the outlined bird sees</span>
+    </div>
+    <p class="band">Two models, with and without the die, from the same evenly spaced start</p>
+    <div class="grid">
+      <figure class="run m1">
+        <video src="lanes_opus_nodie.mp4" poster="lanes_opus_nodie_first.jpg" controls muted loop playsinline preload="metadata"></video>
+        <figcaption>
+          <div class="cond"><span class="model">Claude Opus 5.5</span><span class="tag die-no">without the die</span></div>
+          <div class="facts">Lanes first one-way at round <b>49</b> and stay so to round 100. All 12 birds move in every one of the last 20 rounds.</div>
+        </figcaption>
+      </figure>
+      <figure class="run m1">
+        <video src="lanes_opus_die.mp4" poster="lanes_opus_die_first.jpg" controls muted loop playsinline preload="metadata"></video>
+        <figcaption>
+          <div class="cond"><span class="model">Claude Opus 5.5</span><span class="tag die-yes">with the die</span></div>
+          <div class="facts">Lanes one-way from round <b>72</b> to the end, in the mirror-image assignment of the run on the left. The die is rolled where birds meet head-on.</div>
+        </figcaption>
+      </figure>
+      <figure class="run m2">
+        <video src="lanes_gpt_nodie.mp4" poster="lanes_gpt_nodie_first.jpg" controls muted loop playsinline preload="metadata"></video>
+        <figcaption>
+          <div class="cond"><span class="model">GPT-6.2 Astra</span><span class="tag die-no">without the die</span></div>
+          <div class="facts">Lanes never one-way. On average <b>8.72</b> of 12 birds move per round; head-on pairs stay blocked.</div>
+        </figcaption>
+      </figure>
+      <figure class="run m2">
+        <video src="lanes_gpt_die.mp4" poster="lanes_gpt_die_first.jpg" controls muted loop playsinline preload="metadata"></video>
+        <figcaption>
+          <div class="cond"><span class="model">GPT-6.2 Astra</span><span class="tag die-yes">with the die</span></div>
+          <div class="facts">Lanes first one-way at round <b>30</b> and one-way in 40 of the last 42 rounds; <b>11.71</b> of 12 birds move per round.</div>
+        </figcaption>
+      </figure>
+    </div>
+    <p class="band alt">More starts</p>
+    <p class="subnote">Two further runs without the die, each from a different random start: 12 of the 120 cells drawn at random, six birds for each direction.</p>
+    <div class="grid">
+      <figure class="run m1">
+        <video src="lanes_opus_nodie_random_1.mp4" poster="lanes_opus_nodie_random_1_first.jpg" controls muted loop playsinline preload="metadata"></video>
+        <figcaption>
+          <div class="cond"><span class="model">Claude Opus 5.5</span><span class="tag die-no">without the die</span></div>
+          <div class="facts">Random start. Lanes one-way from round <b>8</b> to round 100, the end of the run. On average <b>11.90</b> of 12 birds move per round.</div>
+        </figcaption>
+      </figure>
+      <figure class="run m1">
+        <video src="lanes_opus_nodie_random_2.mp4" poster="lanes_opus_nodie_random_2_first.jpg" controls muted loop playsinline preload="metadata"></video>
+        <figcaption>
+          <div class="cond"><span class="model">Claude Opus 5.5</span><span class="tag die-no">without the die</span></div>
+          <div class="facts">Another random start. Lanes first one-way at round <b>94</b>, and one-way from round <b>98</b> to round 115, the end of the run. On average <b>10.75</b> of 12 birds move per round.</div>
+        </figcaption>
+      </figure>
+    </div>
+    <p class="small">The first four runs start from the same evenly spaced state and show the first 100 rounds; the two from random starts are shown in full. Every video is a single run: these are observations, not statistics.</p>
+  </div>
+</section>
+
+<section id="prompt" data-die="on">
+  <div class="inner">
+    <div class="intro">
+      <h2>What each bird <em>is told</em></h2>
+      <p class="lead">This is the complete message one bird receives for one move. It says what the bird sees, the rules and the goal, and nothing else: no history, no position on the ring, no name.</p>
+      <p>The runs with and without the die differ only by the sentence marked <span class="chip">like this</span>. Whether to roll, and with which weights, is left to the bird.</p>
+    </div>
+    <div class="switch" role="group" aria-label="Condition">
+      <button type="button" data-set="on" aria-pressed="true">With the die</button>
+      <button type="button" data-set="off" aria-pressed="false">Without the die</button>
+    </div>
+    <div class="sheet">
+      <p class="what">Example: a bird in an outer lane that meets one other bird one cell apart, with nothing else in view.</p>
+      <pre>You are a bird on a track of square cells with three lanes, A, B and C, that run side by side: lane B lies between lane A and lane C. A cell holds at most one bird.
+Cells are named by lane and by offset along the track from your own cell, which is A 0. Offset +1 is the next cell on the side you are facing, offset -1 is the next cell on the opposite side, and so on.
+A bird can stay where it is or move one cell toward the side it faces, ending in its own lane or in a lane next to its own. Your moves are named by the lane they end in:
+A: to A +1
+B: to B +1
+The wind you feel right now blows toward the + side.
+A bird faces the way the wind it feels blows. Each bird sees only the cells around itself and chooses its own move.
+You can see the cells with offsets from -2 to +2 in all three lanes. Right now:
+A +2: a bird facing the - side
+A +1: empty
+A -1: empty
+A -2: empty
+B +2: empty
+B +1: empty
+B 0: empty
+B -1: empty
+B -2: empty
+C +2: empty
+C +1: empty
+C 0: empty
+C -1: empty
+C -2: empty
+A move into a cell that is occupied does not happen. If two birds try to move into the same cell, neither of them moves. If the moves of two birds would cross each other, neither of them moves.
+Rule: a move that does not happen counts as one clash for the bird that tried it. The birds' shared goal is that every bird travels as smoothly as it can along the wind it feels, with as few clashes as possible.
+<mark class="die">A tool named draw is available: give it a weight for any of A, B and Stay (an option you leave out gets weight 0), and it returns one of them drawn at random with probability proportional to the weights. You may use it or not.</mark>
+Now choose your move.
+No need to explain. End your final reply with a line that contains only "Answer:" followed by A, B or Stay.</pre>
+    </div>
+    <p class="legend">Lane names carry no information: the names of the three lanes and the order in which they are listed are drawn anew for every bird in every round. All prompts, word for word, are in <a href="https://github.com/yongwangxx/Decentrailized-Collective-Multi-Agents/blob/main/code/PROMPTS.md">PROMPTS.md</a>.</p>
+  </div>
+</section>
+
+<section class="close">
+  <div class="inner">
+    <p class="claim">Nothing sets which lane carries which direction. Different runs settle into different, mirror-image lanes: <span>order that no bird was told to make.</span></p>
+    <nav class="links" aria-label="Code and prompts">
+      <a href="https://github.com/yongwangxx/Decentrailized-Collective-Multi-Agents/tree/main/code#readme">Run it yourself: the code</a>
+      <a class="alt" href="https://github.com/yongwangxx/Decentrailized-Collective-Multi-Agents/blob/main/code/PROMPTS.md">All prompts, word for word</a>
+    </nav>
+  </div>
+</section>
+
+<script>
+document.querySelectorAll('.switch button').forEach(function (b) {
+  b.addEventListener('click', function () {
+    document.getElementById('prompt').dataset.die = b.dataset.set;
+    document.querySelectorAll('.switch button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+  });
+});
+</script>
+</html>
