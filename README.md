@@ -1,11 +1,15 @@
 # Lanes without a leader
 
-Language-model particles with no memory, no communication and no identity: every update of every particle is one
-separate, stateless query to a model.
+Twelve birds fly around a ring with three lanes, six in each direction. Every move of every bird is one separate
+query to a language model: a bird sees only the cells around it, has no memory, cannot communicate and has no name.
+Mixed traffic sorts itself into one-way lanes.
 
-- `docs/` — web page with recordings of four counterflow runs in three lanes.
-- `code/` — prompts, randomization, run scripts and analysis scripts for the three sets of experiments (Ising single
-  particle, three roles, counterflow in three lanes). Start with `code/README.md`.
+**Watch the runs:** https://yongwangxx.github.io/Decentrailized-Collective-Multi-Agents/
+
+- `docs/` — the web page, with recordings of six runs and the prompt each bird receives.
+- `code/` — prompts, randomization, run scripts and analysis scripts for the bird runs and for two further
+  experiments (Ising single particle, three roles on a lattice). Start with `code/README.md`; all prompts are in
+  `code/PROMPTS.md`.
 
 ## Citation
 
