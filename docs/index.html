@@ -61,6 +61,13 @@ figure.run figcaption { padding: 14px 16px 16px; display: grid; gap: 8px; border
 .facts { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .facts b { color: var(--ink); font-weight: 800; }
 .small { font-size: 14px; color: var(--muted); max-width: 52em; }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.stats div { background: var(--wash); border-radius: 12px; padding: 14px 16px; display: grid; gap: 4px; align-content: start; }
+.stats b { font-weight: 900; font-size: 34px; line-height: 1; font-variant-numeric: tabular-nums; }
+.stats span { font-size: 14px; color: var(--muted); }
+@media (max-width: 780px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.aside { display: grid; gap: 12px; align-content: center; color: var(--muted); min-width: 0; }
+.aside p.lead { color: var(--ink); font-size: 20px; font-weight: 800; }
 #prompt { background: var(--wash); margin-top: 64px; padding: 56px 0; }
 .switch { display: inline-flex; background: #fff; border: 2px solid var(--ink); border-radius: 999px; padding: 4px; gap: 4px; width: fit-content; }
 .switch button { font: 800 15px var(--sans); color: var(--ink); background: none; border: 0; border-radius: 999px; padding: 10px 18px; cursor: pointer; }
@@ -103,7 +110,7 @@ mark.die { background: var(--hot); color: #fff; font-weight: 700; padding: 3px 5
 <section id="runs">
   <div class="inner">
     <div class="intro">
-      <h2>Six flights, <em>all real runs</em></h2>
+      <h2>Thirteen flights, <em>all real runs</em></h2>
       <p class="lead">The track is a ring of 40 cells with three lanes. Each bird sees the three lanes two cells ahead and two cells behind. It can fly one cell ahead, one cell ahead into a neighbouring lane, or stay. All birds move at once, and a move into an occupied cell does not happen.</p>
       <p>The birds share one goal: that every bird travels as smoothly as it can, with as few clashes as possible. In some runs each bird is also offered a die, a tool that picks one of its moves at random with weights the bird chooses.</p>
     </div>
@@ -145,25 +152,89 @@ mark.die { background: var(--hot); color: #fff; font-weight: 700; padding: 3px 5
         </figcaption>
       </figure>
     </div>
-    <p class="band alt">More starts</p>
-    <p class="subnote">Two further runs without the die, each from a different random start: 12 of the 120 cells drawn at random, six birds for each direction.</p>
+    <p class="band alt">Random starts</p>
+    <p class="subnote">Without the die, Claude Opus 5.5 was run from 13 random starts: 12 of the 120 cells drawn at random, six birds for each direction.</p>
+    <div class="stats" aria-label="Outcome of the 13 runs from random starts at round 100">
+      <div><b>9</b><span>of 13 have one-way lanes at round 100</span></div>
+      <div><b>2</b><span>had one-way lanes earlier and were mixed again at round 100</span></div>
+      <div><b>2</b><span>did not reach one-way lanes within 100 rounds</span></div>
+      <div><b>0</b><span>rounds, in any of the 13 runs, in which every bird was blocked</span></div>
+    </div>
+    <p class="subnote">The eight videos below are from the nine runs that ended with one-way lanes, ordered by how early the lanes sorted. Some sort within a few rounds and some only near round 100, so the count above depends on where the runs are stopped.</p>
     <div class="grid">
       <figure class="run m1">
-        <video src="lanes_opus_nodie_random_1.mp4" poster="lanes_opus_nodie_random_1_first.jpg" controls muted loop playsinline preload="metadata"></video>
+        <video src="lanes_opus_nodie_random_1.mp4" poster="lanes_opus_nodie_random_1_first.jpg" controls muted loop playsinline preload="none"></video>
         <figcaption>
           <div class="cond"><span class="model">Claude Opus 5.5</span><span class="tag die-no">without the die</span></div>
-          <div class="facts">Random start. Lanes one-way from round <b>8</b> to round 100, the end of the run. On average <b>11.90</b> of 12 birds move per round.</div>
+          <div class="facts">Lanes one-way from round <b>8</b> to round 100, the end of the run. On average <b>11.90</b> of 12 birds move per round.</div>
         </figcaption>
       </figure>
       <figure class="run m1">
-        <video src="lanes_opus_nodie_random_2.mp4" poster="lanes_opus_nodie_random_2_first.jpg" controls muted loop playsinline preload="metadata"></video>
+        <video src="lanes_opus_nodie_random_3.mp4" poster="lanes_opus_nodie_random_3_first.jpg" controls muted loop playsinline preload="none"></video>
         <figcaption>
           <div class="cond"><span class="model">Claude Opus 5.5</span><span class="tag die-no">without the die</span></div>
-          <div class="facts">Another random start. Lanes first one-way at round <b>94</b>, and one-way from round <b>98</b> to round 115, the end of the run. On average <b>10.75</b> of 12 birds move per round.</div>
+          <div class="facts">Lanes one-way from round <b>47</b> to round 100, the end of the run. On average <b>11.70</b> of 12 birds move per round.</div>
+        </figcaption>
+      </figure>
+      <figure class="run m1">
+        <video src="lanes_opus_nodie_random_4.mp4" poster="lanes_opus_nodie_random_4_first.jpg" controls muted loop playsinline preload="none"></video>
+        <figcaption>
+          <div class="cond"><span class="model">Claude Opus 5.5</span><span class="tag die-no">without the die</span></div>
+          <div class="facts">Lanes one-way from round <b>57</b> to round 100, the end of the run. On average <b>11.49</b> of 12 birds move per round.</div>
+        </figcaption>
+      </figure>
+      <figure class="run m1">
+        <video src="lanes_opus_nodie_random_5.mp4" poster="lanes_opus_nodie_random_5_first.jpg" controls muted loop playsinline preload="none"></video>
+        <figcaption>
+          <div class="cond"><span class="model">Claude Opus 5.5</span><span class="tag die-no">without the die</span></div>
+          <div class="facts">Lanes one-way for a single round at round 18, then from round <b>78</b> to round 100, the end of the run. On average <b>11.69</b> of 12 birds move per round.</div>
+        </figcaption>
+      </figure>
+      <figure class="run m1">
+        <video src="lanes_opus_nodie_random_6.mp4" poster="lanes_opus_nodie_random_6_first.jpg" controls muted loop playsinline preload="none"></video>
+        <figcaption>
+          <div class="cond"><span class="model">Claude Opus 5.5</span><span class="tag die-no">without the die</span></div>
+          <div class="facts">Lanes one-way from round <b>93</b> to round 100, the end of the run. On average <b>10.28</b> of 12 birds move per round.</div>
+        </figcaption>
+      </figure>
+      <figure class="run m1">
+        <video src="lanes_opus_nodie_random_2.mp4" poster="lanes_opus_nodie_random_2_first.jpg" controls muted loop playsinline preload="none"></video>
+        <figcaption>
+          <div class="cond"><span class="model">Claude Opus 5.5</span><span class="tag die-no">without the die</span></div>
+          <div class="facts">Lanes first one-way at round <b>94</b>, and one-way from round <b>98</b> to round 115, the end of the run. On average <b>10.75</b> of 12 birds move per round.</div>
+        </figcaption>
+      </figure>
+      <figure class="run m1">
+        <video src="lanes_opus_nodie_random_7.mp4" poster="lanes_opus_nodie_random_7_first.jpg" controls muted loop playsinline preload="none"></video>
+        <figcaption>
+          <div class="cond"><span class="model">Claude Opus 5.5</span><span class="tag die-no">without the die</span></div>
+          <div class="facts">Lanes one-way from round <b>98</b> to round 100, the end of the run. On average <b>10.50</b> of 12 birds move per round.</div>
+        </figcaption>
+      </figure>
+      <figure class="run m1">
+        <video src="lanes_opus_nodie_random_8.mp4" poster="lanes_opus_nodie_random_8_first.jpg" controls muted loop playsinline preload="none"></video>
+        <figcaption>
+          <div class="cond"><span class="model">Claude Opus 5.5</span><span class="tag die-no">without the die</span></div>
+          <div class="facts">Lanes one-way only in the last two rounds, <b>99</b> and 100. On average <b>10.35</b> of 12 birds move per round.</div>
         </figcaption>
       </figure>
     </div>
-    <p class="small">The first four runs start from the same evenly spaced state and show the first 100 rounds; the two from random starts are shown in full. Every video is a single run: these are observations, not statistics.</p>
+    <p class="band">All twelve in one lane</p>
+    <div class="grid">
+      <figure class="run m1">
+        <video src="lanes_opus_nodie_single_lane.mp4" poster="lanes_opus_nodie_single_lane_first.jpg" controls muted loop playsinline preload="none"></video>
+        <figcaption>
+          <div class="cond"><span class="model">Claude Opus 5.5</span><span class="tag die-no">without the die</span></div>
+          <div class="facts">Lanes one-way from round <b>33</b> to round 100, the end of the run. On average <b>11.35</b> of 12 birds move per round. At the end the middle lane is empty.</div>
+        </figcaption>
+      </figure>
+      <div class="aside">
+        <p class="lead">A start that is not random.</p>
+        <p>All twelve birds begin in the middle lane, evenly spaced, facing alternately one way and the other, so every bird has an oncoming bird a few cells ahead in its own lane. The two outer lanes are empty.</p>
+        <p>The birds spread over the three lanes, and by round 33 each direction holds one outer lane. Nothing in the message says which direction goes where.</p>
+      </div>
+    </div>
+    <p class="small">The first four runs start from the same evenly spaced state and show the first 100 rounds; the others are shown in full. Every video is a single run. The counts for random starts are from 13 runs of one model: they are observations, not statistics.</p>
   </div>
 </section>
 
