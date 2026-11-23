@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the paper below."
+title: "Collective order from language models without communication, memory or shared context"
+type: software
+authors:
+  - name: “Yong Wang”
+    email: “physics-yong.wang@polyu.edu.hk”
+    affiliation: "Department of Physics and Materials, The Hong Kong Polytechnic University"
+repository-code: "https://github.com/yongwangxx/Decentralized-Collective-Multi-Agents"
+url: "https://yongwangxx.github.io/Decentralized-Collective-Multi-Agents/"
+license: MIT
+  year: 2026
